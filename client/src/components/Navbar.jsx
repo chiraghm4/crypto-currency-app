@@ -49,8 +49,8 @@ const Navbar = () => {
                 <NavbarItems
                   key={item + index}
                   title={item}
-                  className="my-4 text-lg"
-                />
+                  className="my-2 text-lg"
+                /> 
               )
             )}
           </ul>
