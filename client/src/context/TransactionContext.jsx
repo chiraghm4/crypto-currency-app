@@ -1,4 +1,4 @@
- import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ethers } from "ethers";
 
 import { contractABI, contractAddress } from "../utils/constants";
@@ -78,6 +78,9 @@ export const TransactionsProvider = ({ children }) => {
         const currentTransactionCount = await transactionsContract.getTransactionCount();
 
         window.localStorage.setItem("transactionCount", currentTransactionCount);
+      }
+      else{
+        console.log("no ethers")
       }
     } catch (error) {
       console.log(error);
