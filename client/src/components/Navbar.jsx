@@ -5,7 +5,23 @@ import { AiOutlineClose } from "react-icons/ai";
 import logo from "../../images/images/logo.png";
 
 const NavbarItems = ({ title, classProps }) => {
-  return <li className={`mx-4 cursor-pointer ${classProps}`}>{title}</li>;
+  return (
+    <li className={`mx-4 cursor-pointer ${classProps}`}>
+      <a
+        href={
+          title === "Wallets"
+            ? "https://www.cryptowisser.com/wallets/"
+            : title === "Tutorials"
+            ? "https://academy.binance.com/en/articles/a-complete-guide-to-cryptocurrency-trading-for-beginners?ref=HDYAHEES"
+            : title === "Exchange"
+            ? "https://coinmarketcap.com/rankings/exchanges/"
+            : "https://coinmarketcap.com/"
+        }
+      >
+        {title}
+      </a>
+    </li>
+  );
 };
 
 const Navbar = () => {
@@ -20,7 +36,7 @@ const Navbar = () => {
         {["Market", "Exchange", "Tutorials", "Wallets"].map((item, index) => (
           <NavbarItems key={item + index} title={item} />
         ))}
-        <li className="bg-[#2952e3] px-7 py-2 rounded-full cursor-pointer hover:bg-[#2546bd]">
+        <li className="bg-[#2952e3] px-7 py-2 rounded-full cursor-pointer hover:bg-[#2546bd]" onClick={()=>alert("Currently working on login functionality, will be using firebase for the same. Cheers!")}>
           Login
         </li>
       </ul>
@@ -39,8 +55,10 @@ const Navbar = () => {
           />
         )}
         {toggleMenu && (
-          <ul className="z-10 fixed -top-0 -right-2 p-3 w-[70vw] h-screen shadow-2xl md:hidden list-none
-          flex flex-col justify-start items-end rounded-md blue-glassmorphism text-white animate-slide-in">
+          <ul
+            className="z-10 fixed -top-0 -right-2 p-3 w-[70vw] h-screen shadow-2xl md:hidden list-none
+          flex flex-col justify-start items-end rounded-md blue-glassmorphism text-white animate-slide-in"
+          >
             <li className="text-xl w-full my-2">
               <AiOutlineClose onClick={() => setToggleMenu(false)} />
             </li>
@@ -50,7 +68,7 @@ const Navbar = () => {
                   key={item + index}
                   title={item}
                   className="my-2 text-lg"
-                /> 
+                />
               )
             )}
           </ul>

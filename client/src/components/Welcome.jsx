@@ -1,7 +1,9 @@
+import React, { useContext } from "react";
 import { AiFillPlayCircle } from "react-icons/ai";
 import { SiEthereum } from "react-icons/si";
 import { BsInfoCircleFill } from "react-icons/bs";
-
+import { shortenAddress } from "../utils/shortenAddress";
+import { TransactionContext } from "../context/TransactionContext";
 import { Loader } from "./";
 
 const commonStyles =
@@ -20,11 +22,16 @@ const Input = ({placeholder, name, type, value, handleChange}) => {
   )
 }
 
-const Welcome = () => {
-  const connectWallet = () => {};
+const Welcome = () => { 
+  const { connectWallet, currentAccount, formData, sendTransaction, handleChange, isLoading }  = useContext(TransactionContext);
+  const handleSubmit = (e) => {
+    const { addressTo, amount, keyword, message } = formData;
 
-  const handleSubmit = () => {
+    e.preventDefault();
+ 
+    if(!addressTo || !amount || !keyword || !message) return;
 
+    sendTransaction();
   }
 
   return (
@@ -39,6 +46,7 @@ const Welcome = () => {
             Explore the crypto world. Buy and sell cryptocurrencies easily on
             Krypto.
           </p>
+          {!currentAccount && (
           <button
             type="button"
             onClick={connectWallet}
@@ -49,6 +57,8 @@ const Welcome = () => {
               Connect Wallet
             </p>
           </button>
+          )}
+
           <div className="grid sm:grid-cols-3 grid-cols-2 w-full mt-10">
             <div className={`rounded-tl-2xl ${commonStyles}`}>Reliability</div>
             <div className={commonStyles}>Security</div>
@@ -68,7 +78,9 @@ const Welcome = () => {
                 <BsInfoCircleFill fontSize={17} color="#fff" />
               </div>
               <div>
-                <p className="text-white font-light text-sm">Address</p>
+                <p className="text-white font-light text-sm">
+                  {shortenAddress(currentAccount)}
+                </p>
                 <p className="text-white font-semibold text-lg mt-1">
                   Ethereum
                 </p>
@@ -77,16 +89,16 @@ const Welcome = () => {
           </div>
           
           <div className="p-5 sm:w-96 w-full flex flex-col justify-start items-center blue-glassmorphism">
-            <Input placeholder="Address to" name="addressTo" type="text" handleChange={()=>{}} />
-            <Input placeholder="Amount (ETH)" name="amount" type="number" handleChange={()=>{}} />
-            <Input placeholder="Keyword (Gif)" name="keyword" type="text" handleChange={()=>{}} />
-            <Input placeholder="Enter Message" name="message" type="text" handleChange={()=>{}} />
+            <Input placeholder="Address to" name="addressTo" type="text" handleChange={handleChange} />
+            <Input placeholder="Amount (ETH)" name="amount" type="number" handleChange={handleChange} />
+            <Input placeholder="Keyword (Gif)" name="keyword" type="text" handleChange={handleChange} />
+            <Input placeholder="Enter Message" name="message" type="text" handleChange={handleChange} />
 
             <div className="h-[1px] w-full bg-gray-400 my-2" />
 
-            {
-              true ? (<Loader />) : (
-                <button type="submit" onSubmit={handleSubmit} className="text-white w-full mt-2 border-[1px] p-2 border-[#3d4f7c] rounded-full cursor-pointer">
+            { 
+              isLoading ? (<Loader />) : (
+                <button type="submit" onClick={handleSubmit} className="text-white w-full mt-2 border-[1px] p-2 border-[#3d4f7c] rounded-full cursor-pointer">
                   Send Now
                 </button>
               )
